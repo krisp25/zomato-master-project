@@ -22,7 +22,7 @@ Router.post("/signup", async (req, res) => {
         return res.status(200).json({ token, status: "Success" });
     } catch (error) {
         return res.status(500).json({ error: error.message });
-    }
+    } 
 });
 
 /*
