@@ -22,7 +22,7 @@ Params    _id
 Access    Public
 Method    POST
 */
-Router.post("/", upload.array("file", 4), async (req, res) => {
+Router.post("/", upload.single("file"), async (req, res) => {
     try {
         const file = req.file;
 
