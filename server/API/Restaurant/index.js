@@ -1,5 +1,5 @@
 // Libraries
-import express, { json } from "express";
+import express from "express";
 import passport from "passport";
 
 // Database model
