@@ -15,6 +15,9 @@ Access    Public
 Method    GET
 */
 Router.get("/r/:_id", async (req, res) => {
+    // validation
+    
+
     try {
         const { _id } = req.params;
 

@@ -18,10 +18,10 @@ import Menu from "./API/Menu";
 import Image from "./API/Image";
 import Order from "./API/Order";
 import Review from "./API/Review";
+import User from "./API/User";
 
 // Database connection
 import ConnectDB from "./database/connection";
-import { ReviewModel } from "./database/reviews";
 
 const zomato = express();
 
@@ -51,6 +51,7 @@ zomato.use("/menu", Menu);
 zomato.use("/image", Image);
 zomato.use("/order", Order);
 zomato.use("/review", Review);
+zomato.use("/user", User);
 
 zomato.get("/", (req, res) => res.json({ message: "Setup Success 🚀" }));
 
