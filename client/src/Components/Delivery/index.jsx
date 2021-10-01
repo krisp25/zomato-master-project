@@ -120,14 +120,47 @@ const Delivery = () => {
             durationOfDelivery: 30,
             restaurantReviewValue: 4.4,
         },
+        {
+            _id: "2324364523432624",
+            photos: [
+                "https://b.zmtcdn.com/data/pictures/chains/0/3202160/3a12ece4f7c57200da8ae68d9b558f8c_o2_featured_v2.jpeg",
+            ],
+            name: "La Pino'z Pizza",
+            cuisine: [
+                "Pizza",
+                "Fast Food",
+                "Italian",
+            ],
+            averageCost: 350,
+            isPro: false,
+            isOff: 40,
+            durationOfDelivery: 29,
+            restaurantReviewValue: 4.5,
+        },
+        {
+            _id: "23243642435624",
+            photos: [
+                "https://b.zmtcdn.com/data/pictures/chains/9/3200029/9410759d611db9c62c3acc23c1f27e06_o2_featured_v2.jpg",
+            ],
+            name: "KFC",
+            cuisine: [
+                "Cafe",
+                "Desserts",
+            ],
+            averageCost: 150,
+            isPro: false,
+            isOff: 40,
+            durationOfDelivery: 48,
+            restaurantReviewValue: 4.3,
+        },
     ]);
 
     return (
         <>
             <DeliveryCarousel />
             {/* <Brand /> */}
-            <h1 className="text-xl lg:text-3xl mt-6 font-medium">
-                Delivery Restaurants
+            <h1 className="text-xl mt-4 mb-2 md:mt-8 md:mb-6 md:text-3xl md:font-semibold">
+                Delivery Restaurants in Vadodara
             </h1>
             <div className="flex justify-between flex-wrap my-2">
                 {restaurantList.map((restaurant) => (
