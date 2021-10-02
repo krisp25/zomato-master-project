@@ -12,7 +12,7 @@ const Dining = () => {
                 </h1>
                 <DiningCarousal />
                 <h1 className="text-xl my-4 md:my-8 md:text-3xl md:font-semibold">
-                    Dining Restaurants in Vadodara
+                    Dine-Out Restaurants in Vadodara
                 </h1>
             </div>
         </>
