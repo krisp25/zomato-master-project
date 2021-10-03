@@ -70,7 +70,11 @@ const Overview = () => {
                     </div>
                     <div className="flex flex-wrap gap-3">
                         <MenuCollection 
-                            image="https://b.zmtcdn.com/data/menus/023/3200023/6f2ad256f97793a9719632e803137985.jpg?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A"
+                            image={[
+                                "https://b.zmtcdn.com/data/menus/023/3200023/6f2ad256f97793a9719632e803137985.jpg",
+                                "https://b.zmtcdn.com/data/menus/023/3200023/2cecbedfc196e22ffc3be95a4c538327.jpg",
+                                "https://b.zmtcdn.com/data/menus/023/3200023/155fe234b000b52e2ebd5f6dc970e104.jpg",
+                            ]}
                             menuTitle="Menu"
                             pages="3 Pages"
                         />
