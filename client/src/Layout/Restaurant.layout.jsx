@@ -9,6 +9,7 @@ import ImageGrid from "../Components/Restaurant/ImageGrid";
 import RestaurantInfo from '../Components/Restaurant/RestaurantInfo';
 import InfoButtons from '../Components/Restaurant/InfoButtons';
 import TabContainer from '../Components/Restaurant/Tabs';
+import CartContainer from '../Components/Cart/CartContainer';
 
 const RestaurantLayout = (props) => {
 
@@ -16,7 +17,7 @@ const RestaurantLayout = (props) => {
     return (
         <>
             <RestaurantNavbar />
-            <div className="container mx-auto mt-4 px-4 lg:px-20">
+            <div className="w-full h-screen container mx-auto mt-4 px-4 lg:px-20">
                 <ImageGrid 
                     images={[
                         "https://b.zmtcdn.com/data/pictures/1/19277201/98f61bae7f08ccd13f1522c72700c536.jpg?fit=around|771.75:416.25&crop=771.75:416.25;*,*",
@@ -54,6 +55,7 @@ const RestaurantLayout = (props) => {
                     {props.children}
                 </div>
             </div>
+            <CartContainer />
         </>
     );
 };

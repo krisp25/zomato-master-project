@@ -10,7 +10,7 @@ import FoodList from '../../Components/Restaurant/Order-Online/FoodList';
 const OrderOnline = () => {
     return (
         <>
-            <div className="w-full flex">
+            <div className="w-full h-screen flex">
                 <aside className="hidden md:flex flex-col border-r overflow-y-scroll border-gray-200 gap-3 w-1/4 h-screen">
                     <MenuListContainer />
                     <MenuListContainer />
