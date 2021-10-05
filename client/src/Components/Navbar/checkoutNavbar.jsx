@@ -1,8 +1,11 @@
 import React from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { FaUserAlt } from "react-icons/fa";
+import gravatar from "gravatar";
 
 const CheckoutNavbar = () => {
+    const reduxState = useSelector((global) => global.user.user);
+
     return (
         <>
             <nav className=" p-4 flex bg-white shadow-md lg:shadow-none w-full items-center">
@@ -19,10 +22,14 @@ const CheckoutNavbar = () => {
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
-                            <span className="border p-2 border-gray-300 text-zomato-400 rounded-full">
-                                    <FaUserAlt />
-                            </span>
-                            Krishna
+                            <div className="border p-2 border-gray-300 text-zomato-400 w-20 h-20 rounded-full">
+                                <img
+                                    src={gravatar.url(reduxState?.user?.email)}
+                                    alt={reduxState?.user?.email}
+                                    className="w-full h-full rounded-full object-cover"
+                                />
+                            </div>
+                            {reduxState?.user?.fullname}
                         </div>
                     </div>
                 </div>
