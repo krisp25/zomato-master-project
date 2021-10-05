@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { TiStarOutline } from "react-icons/ti";
 import { RiDirectionLine, RiShareForwardLine } from "react-icons/ri";
 import { BiBookmarkPlus } from "react-icons/bi";
@@ -11,28 +13,51 @@ import InfoButtons from '../Components/Restaurant/InfoButtons';
 import TabContainer from '../Components/Restaurant/Tabs';
 import CartContainer from '../Components/Cart/CartContainer';
 
-const RestaurantLayout = (props) => {
+// Redux Actions
+import { getSpecificRestaurant } from "../Redux/Reducer/Restaurant/Restaurant.action";
+import { getImage } from "../Redux/Reducer/Image/Image.action";
 
+const RestaurantLayout = (props) => {
+    const [restaurant, setRestaurant] = useState({
+        images: [],
+        name: "",
+        rating: "",
+        cuisine: "",
+        address: "",
+    });
+
+    const { id } = useParams();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getSpecificRestaurant(id)).then((data) => {
+            setRestaurant((prev) => ({
+                ...prev,
+                ...data.payload.restaurant,
+            }));
+      
+            dispatch(getImage(data.payload.restaurant.photos)).then((data) =>
+                setRestaurant((prev) => ({ ...prev, ...data.payload.image }))
+            );
+        });
+    
+        // dispatch(getCart());
+    }, []);
+    
 
     return (
         <>
             <RestaurantNavbar />
-            <div className="w-full h-screen container mx-auto mt-4 px-4 lg:px-20">
+            <div className="w-full h-screen container mx-auto mt-4 px-4 lg:px-20 pb-10">
                 <ImageGrid 
-                    images={[
-                        "https://b.zmtcdn.com/data/pictures/1/19277201/98f61bae7f08ccd13f1522c72700c536.jpg?fit=around|771.75:416.25&crop=771.75:416.25;*,*",
-                        "https://b.zmtcdn.com/data/pictures/chains/3/3200023/5bf90ca580e578d486e619d1487131c7.jpg?fit=around|300:273&crop=300:273;*,*",
-                        "https://b.zmtcdn.com/data/pictures/chains/3/3200023/549fa9a4b5709056b5133112ae2cf805.jpg?fit=around|300:273&crop=300:273;*,*",
-                        "https://b.zmtcdn.com/data/pictures/chains/3/3200023/2afbb990dbeab06c6e4e3872bedd711f.jpg?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A",
-                        "https://b.zmtcdn.com/data/reviews_photos/7b4/40c856ee85731644d2ebae0da8dc67b4_1575720507.jpg?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A"
-                    ]} 
+                    images={restaurant.images} 
                 />
                 <RestaurantInfo 
-                    title="McDonald's"
-                    restaurantRating="4.3"
-                    deliveryRating="4.4"
-                    cuisine="Burger, Fast Food, Beverages"
-                    address="Manjalpur, Vadodara"
+                    name={restaurant?.name}
+                    restaurantRating={restaurant?.rating || 0}
+                    deliveryRating={restaurant?.rating || 0}
+                    cuisine={restaurant?.cuisine}
+                    address={restaurant?.address}
                 />
                 <div className="my-4 flex flex-wrap gap-3">
                     <InfoButtons isActive>

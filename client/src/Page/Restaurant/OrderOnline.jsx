@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineCompass } from "react-icons/ai";
 import { BiTimeFive } from "react-icons/bi";
 
@@ -7,15 +8,45 @@ import MenuListContainer from '../../Components/Restaurant/Order-Online/MenuList
 import FloatingMenuButton from '../../Components/Restaurant/Order-Online/FloatingMenuButton';
 import FoodList from '../../Components/Restaurant/Order-Online/FoodList';
 
+// Redux Actions
+import { getFoodList } from "../../Redux/Reducer/Food/Food.action";
+
 const OrderOnline = () => {
+    const [menu, setMenu] = useState([]);
+    const [selected, setSelected] = useState("");
+
+    const onClickHandler = (e) => {
+        if (e.target.id) {
+            setSelected(e.target.id);
+        }
+        return;
+    };
+
+    const reduxState = useSelector(
+        (globalStore) => globalStore.restaurant.selectedRestaurant.restaurant
+    );
+    
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        reduxState &&
+            dispatch(getFoodList(reduxState.menu)).then((data) =>
+                setMenu(data.payload.menus.menus)
+            );
+    }, [reduxState]);
+
     return (
         <>
             <div className="w-full h-screen flex">
                 <aside className="hidden md:flex flex-col border-r overflow-y-scroll border-gray-200 gap-3 w-1/4 h-screen">
-                    <MenuListContainer />
-                    <MenuListContainer />
-                    <MenuListContainer />
-                    <MenuListContainer />
+                {menu.map((item) => (
+                    <MenuListContainer
+                        {...item}
+                        key={item._id}
+                        onClickHandler={onClickHandler}
+                        selected={selected}
+                    />
+                ))}
                 </aside>
                 <div className="w-full md:block md:w-3/4">
                     <div className="pl-3 mt-4">
@@ -25,18 +56,9 @@ const OrderOnline = () => {
                         </h4>
                     </div>
                     <section className="pl-3 my-4">
-                        <FoodList 
-                            name="Burger"
-                            items={[
-                                {
-                                    image: "https://b.zmtcdn.com/data/dish_photos/658/238007d6fd58713b333633a7c93d2658.jpg?output-format=webp&fit=around|130:130&crop=130:130;*,*",
-                                    name: "McAloo Tikki Burger With Whole Wheat Bun",
-                                    rating: 3,
-                                    price: 56.19,
-                                    description: "The world's favorite Indian burger! Crunchy potato and peas patty topped with tomatoes and onions. Now with the goodness of whole wheat bun",
-                                }
-                            ]}
-                        />
+                        {menu.map((item) => (
+                            <FoodList key={item._id} {...item} />
+                        ))}
                     </section>
                 </div>
             </div>

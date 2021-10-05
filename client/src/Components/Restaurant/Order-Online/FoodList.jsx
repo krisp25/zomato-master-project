@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // components
 import FoodItem from "./FoodItem";
@@ -12,7 +12,7 @@ const FoodList = (props) => {
                 </h2>
                 <div className="flex flex-col gap-3">
                     {props.items.map((item) => (
-                        <FoodItem { ...item } />
+                        <FoodItem key={item} _id={item}  />
                     ))}
                 </div>
             </div>

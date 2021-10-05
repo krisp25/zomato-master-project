@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { TiStarFullOutline } from "react-icons/ti";
 import dayjs from "dayjs";
+import { useDispatch } from "react-redux";
+import { getUser } from "../../../Redux/Reducer/User/user.action";
 
+const ReviewCard = (props) => {
+    const [user, setUser] = useState("");
+    const dispatch = useDispatch();
 
-const ReviewCard = () => {
+    useEffect(() => {
+        dispatch(getUser(props.user)).then((data) =>
+            setUser(data.payload.user.fullname)
+        );
+    }, []);
+
     return (
         <>
             <div className="my-3 mr-3 flex flex-col gap-3">
@@ -17,7 +27,7 @@ const ReviewCard = () => {
                             />
                         </div>
                         <div className="flex flex-col">
-                            <h3 className="text-lg font-semibold">Octavia Evans</h3>
+                            <h3 className="text-lg font-semibold">{user}</h3>
                             <small className="text-gray-500">
                                 5 Reviews &#8226; 3 Followers
                             </small>
@@ -33,17 +43,15 @@ const ReviewCard = () => {
                             3 <TiStarFullOutline />
                         </span>
                         <h5 className="font-regular uppercase">
-                            {/* {props.isRestaurantReview ? "Dining" : "Delivery"} */}Delivery
+                            {props.isRestaurantReview ? "Dining" : "Delivery"}
                         </h5>
                         <small className="text-gray-500">
-                            {/* {dayjs(props.createdAt).format("DD MMM YYYY")} */}3 Days ago
+                            {dayjs(props.createdAt).format("DD MMM YYYY")}
                         </small>
                     </div>
                     <div className="w-full">
                         <p className="w-full text-gray-600 font-light text-base">
-                        Food is okay but packing I didn't expect this way from Macd, burger wraped in cotton and 
-                        due to weight all mayonnaise stick to that, I think macd has to put burger in package like KFC do, 
-                        Test of Chatpata kabab is okay I think macd can improve in that area too.
+                            {props.reviewText}
                         </p>
                     </div>
                 </div>

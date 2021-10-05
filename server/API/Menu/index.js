@@ -24,7 +24,7 @@ Router.get("/list/:_id", async (req, res) => {
 
         const { _id } = req.params;
 
-        const menus = await MenuModel.findOne(_id);
+        const menus = await MenuModel.findById(_id);
 
         return res.json({ menus });
     } catch (error) {

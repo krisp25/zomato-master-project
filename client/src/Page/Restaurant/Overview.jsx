@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { IoMdArrowDropright } from "react-icons/io";
 import Slider from 'react-slick';
+import { useSelector, useDispatch } from "react-redux";
 import ReactStars from "react-rating-stars-component";
 
 // Components
@@ -11,7 +12,14 @@ import { NextArrow, PrevArrow } from "../../Components/CarousalArrow";
 import ReviewCard from "../../Components/Restaurant/Reviews/ReviewCard";
 import MapView from '../../Components/Restaurant/MapView';
 
+// Redux actions
+import { getImage } from "../../Redux/Reducer/Image/Image.action";
+import { getReviews } from "../../Redux/Reducer/Reviews/Review.action";
+
 const Overview = () => {
+    const [menuImage, setMenuImages] = useState({ images: [] });
+    const [Reviews, setReviews] = useState([]);
+
     const { id } = useParams();
 
     const settings = {
@@ -51,8 +59,32 @@ const Overview = () => {
         ],
     };
 
+    const reduxState = useSelector(
+        (globalStore) => globalStore.restaurant.selectedRestaurant.restaurant
+    );
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (reduxState) {
+            dispatch(getImage(reduxState?.menuImage)).then((data) => {
+                const images = [];
+                data.payload.image.images.map(({ location }) => images.push(location));
+                setMenuImages(images);
+            });
+
+            dispatch(getReviews(reduxState?._id)).then((data) =>
+                setReviews(data.payload.reviews)
+            );
+        }
+    }, []);
+
     const ratingChanged = (newRating) => {
         console.log(newRating);
+    };
+
+    const getLatLong = (mapAddress) => {
+        return mapAddress?.split(",").map((item) => parseFloat(item));
     };
 
     return (
@@ -70,30 +102,22 @@ const Overview = () => {
                     </div>
                     <div className="flex flex-wrap gap-3">
                         <MenuCollection 
-                            image={[
-                                "https://b.zmtcdn.com/data/menus/023/3200023/6f2ad256f97793a9719632e803137985.jpg",
-                                "https://b.zmtcdn.com/data/menus/023/3200023/2cecbedfc196e22ffc3be95a4c538327.jpg",
-                                "https://b.zmtcdn.com/data/menus/023/3200023/155fe234b000b52e2ebd5f6dc970e104.jpg",
-                            ]}
+                            image={menuImage}
                             menuTitle="Menu"
                             pages="3 Pages"
                         />
                     </div>
                     <h2 className="font-semibold text-lg md:text-2xl my-4">Cuisines</h2>
                     <div className="flex flex-wrap gap-2">
-                        <span className="border border-gray-500 text-blue-400 px-2 py-1 rounded-full">
-                            Burger
-                        </span>
-                        <span className="border border-gray-500 text-blue-400 px-2 py-1 rounded-full">
-                            Fast Food
-                        </span>
-                        <span className="border border-gray-500 text-blue-400 px-2 py-1 rounded-full">
-                            Beverages
-                        </span>
+                        {reduxState?.cuisine.map((data) => (
+                            <span className="border border-gray-600 text-blue-600 px-2 py-1 rounded-full">
+                                {data}
+                            </span>
+                        ))}
                     </div>
                     <div className="my-4">
                         <h2 className="font-semibold text-lg md:text-2xl">Average Cost</h2>
-                        <h6 className="text-base md:text-lg lg:text-xl font-regular">₹500 for two people (approx.)</h6>
+                        <h6 className="text-base md:text-lg lg:text-xl font-regular">₹ {reduxState?.averageCost} for two people (approx.)</h6>
                         <small className="text-gray-500">Exclusive of applicable taxes and charges, if any</small>
                     </div>
                     <div className="my-4">
@@ -139,19 +163,18 @@ const Overview = () => {
                     </div>
                     <div className="my-4 w-full md:hidden flex flex-col gap-4">
                         <MapView 
-                            title="McDonald's"
-                            phno="+918928304276"
-                            address="Rakesh Patel Estate. Patidar Crossing, Near by Saraswati Complex, Manjalpur Vadodara"
-                            mapLocation={[22.2733243138, 73.1886565313]}
+                            title={reduxState?.name}
+                            phno={`+91${reduxState?.contactNumber}`}
+                            mapLocation={getLatLong(reduxState?.mapLocation)}
+                            address={reduxState?.address}
                         />
                     </div>
                     <div className="my-4">
                         <h2 className="font-semibold text-lg md:text-2xl mb-2">Review Highlights</h2>
                         <div className="my-4">
-                            <ReviewCard />
-                            <ReviewCard />
-                            <ReviewCard />
-                            <ReviewCard />
+                        {Reviews.map((reviewData) => (
+                            <ReviewCard {...reviewData} />
+                        ))}
                         </div>
                     </div>
                 </div>
@@ -160,10 +183,10 @@ const Overview = () => {
                     className="hidden md:flex md:w-4/12 sticky fixed top-2 bg-white p-3 shadow-xl rounded-xl flex-col gap-4"
                 >
                     <MapView 
-                        title="McDonald's"
-                        phno="+918928304276"
-                        address="Rakesh Patel Estate. Patidar Crossing, Near by Saraswati Complex, Manjalpur Vadodara"
-                        mapLocation={[22.2733243138, 73.1886565313]}
+                        title={reduxState?.name}
+                        phno={`+91${reduxState?.contactNumber}`}
+                        mapLocation={getLatLong(reduxState?.mapLocation)}
+                        address={reduxState?.address}
                     />
                 </aside>
             </div>   
