@@ -46,7 +46,7 @@ Access    Public
 Method    POST
 */
 Router.post(
-    "/new/:_id", 
+    "/new", 
     passport.authenticate("jwt", { session: false }), 
     async (req, res) => {
     try {
@@ -54,7 +54,7 @@ Router.post(
         await ValidateOrderId(req.params);
         await ValidateOrderDetails(req.body);
         
-        const { _id } = req.params;
+        const { _id } = req.session.passport.user._doc;
         const { orderDetails } = req.body;
 
         const addNewOrder = await OrderModel.findOneAndUpdate(
